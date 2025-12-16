@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 import org.springframework.web.bind.annotation.RestController;
-imo
+import org.springframework.web.bind.annotation.GetMapping;
 @RestController
 public class basic {
     @GetMapping("/home")
