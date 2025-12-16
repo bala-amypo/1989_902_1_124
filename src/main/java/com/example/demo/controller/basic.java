@@ -1,4 +1,9 @@
 package com.example.demo.controller;
 import org.springframework.web.bind.annotation.*;
 @RestController
-public 
+public class basic {
+    @GetMapping
+    public String sample(){
+        return "hello world";
+    }
+}
