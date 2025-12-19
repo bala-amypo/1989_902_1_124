@@ -1,0 +1,17 @@
+package com.example.demo.repository;
+
+import com.example.demo.entity.Supplier;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface SupplierRepository extends JpaRepository<Supplier, Long> {
+
+    @Override
+    Optional<Supplier> findById(Long id);
+
+    List<Supplier> findByIsActiveTrue();
+
+    boolean existsByEmail(String email);
+}
