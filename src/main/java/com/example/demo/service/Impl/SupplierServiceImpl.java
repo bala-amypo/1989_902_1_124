@@ -7,36 +7,45 @@ import com.example.demo.service.SupplierService;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
+@Service
 public class SupplierServiceImpl implements SupplierService {
 
-    private final SupplierRepository supplierRepository;
+    private final SupplierRepository repository;
 
-    public SupplierServiceImpl(SupplierRepository supplierRepository) {
-        this.supplierRepository = supplierRepository;
+    public SupplierServiceImpl(SupplierRepository repository) {
+        this.repository = repository;
     }
 
     @Override
-    public Supplier createSupplier(Supplier supplier) {
-        return supplierRepository.save(supplier);
+    public Supplier create(Supplier supplier) {
+        return repository.save(supplier);
     }
 
     @Override
-    public Supplier getSupplierById(Long id) {
-        return supplierRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
+    public Supplier update(Long id, Supplier supplier) {
+        Supplier existing = getById(id);
+        existing.setName(supplier.getName());
+        existing.setEmail(supplier.getEmail());
+        existing.setPhone(supplier.getPhone());
+        existing.setAddress(supplier.getAddress());
+        return repository.save(existing);
     }
 
     @Override
-    public List<Supplier> getAllSuppliers() {
-        return supplierRepository.findAll();
+    public Supplier getById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Supplier not found"));
     }
 
     @Override
-    public void deactivateSupplier(Long id) {
-        Supplier supplier = getSupplierById(id);
-        supplier.setIsActive(false);
-        supplier.setUpdatedAt(LocalDateTime.now());
-        supplierRepository.save(supplier);
+    public List<Supplier> getAll() {
+        return repository.findAll();
+    }
+
+    @Override
+    public void deactivate(Long id) {
+        Supplier s = getById(id);
+        s.setIsActive(false);
+        repository.save(s);
     }
 }
