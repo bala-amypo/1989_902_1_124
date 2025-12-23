@@ -1,26 +1,18 @@
-package com.example.demo.entity;
-
-import jakarta.persistence.*;
-
 @Entity
-@Table(name = "diversity_targets")
+@Table(name = "diversity_target")
 public class DiversityTarget {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int targetYear;
-    private Double targetPercentage;
-    private Boolean active;
+    private Integer targetYear;
 
     @ManyToOne
     private DiversityClassification classification;
 
-    @PrePersist
-    void preSave() {
-        if (active == null) active = true;
-    }
+    private Double targetPercentage;
+    private Boolean active = true;
 
-    public DiversityTarget() {}
+    // getters & setters
 }

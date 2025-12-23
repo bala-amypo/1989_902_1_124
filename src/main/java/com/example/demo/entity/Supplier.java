@@ -1,11 +1,17 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
-import java.util.Set;
+import java.time.Instant;
+import java.util.List;
 
 @Entity
-@Table(name = "suppliers")
+@Table(
+    name = "suppliers",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = "name"),
+        @UniqueConstraint(columnNames = "email")
+    }
+)
 public class Supplier {
 
     @Id
@@ -13,36 +19,33 @@ public class Supplier {
     private Long id;
 
     private String name;
-
-    @Column(unique = true)
-    private String email;
-
     private String registrationNumber;
-
-    private Boolean isActive;
-
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private String email;
+    private String phone;
+    private String address;
 
     @ManyToMany
-    private Set<DiversityClassification> diversityClassifications;
+    @JoinTable(
+        name = "supplier_classifications",
+        joinColumns = @JoinColumn(name = "supplier_id"),
+        inverseJoinColumns = @JoinColumn(name = "classification_id")
+    )
+    private List<DiversityClassification> diversityClassifications;
+
+    private Boolean isActive = true;
+
+    private Instant createdAt;
+    private Instant updatedAt;
 
     @PrePersist
-    void prePersist() {
-        if (isActive == null) isActive = true;
-        if (createdAt == null) createdAt = LocalDateTime.now();
+    public void onCreate() {
+        createdAt = Instant.now();
     }
 
-    public Supplier() {}
-
-    public Supplier(String name, String email, String registrationNumber) {
-        this.name = name;
-        this.email = email;
-        this.registrationNumber = registrationNumber;
+    @PreUpdate
+    public void onUpdate() {
+        updatedAt = Instant.now();
     }
 
     // getters & setters
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 }

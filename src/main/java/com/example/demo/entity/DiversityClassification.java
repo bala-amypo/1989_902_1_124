@@ -1,10 +1,7 @@
-package com.example.demo.entity;
-
-import jakarta.persistence.*;
-import java.util.Set;
-
 @Entity
-@Table(name = "diversity_classifications")
+@Table(name = "diversity_classification", uniqueConstraints = {
+    @UniqueConstraint(columnNames = "code")
+})
 public class DiversityClassification {
 
     @Id
@@ -13,22 +10,7 @@ public class DiversityClassification {
 
     private String code;
     private String description;
-    private Boolean active;
+    private Boolean active = true;
 
-    @ManyToMany(mappedBy = "diversityClassifications")
-    private Set<Supplier> suppliers;
-
-    @PrePersist
-    @PreUpdate
-    void preSave() {
-        if (active == null) active = true;
-        if (code != null) code = code.toUpperCase();
-    }
-
-    public DiversityClassification() {}
-
-    public DiversityClassification(String code, String description) {
-        this.code = code;
-        this.description = description;
-    }
+    // getters & setters
 }

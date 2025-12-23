@@ -1,9 +1,7 @@
-package com.example.demo.entity;
-
-import jakarta.persistence.*;
-
 @Entity
-@Table(name = "spend_categories")
+@Table(name = "spend_category", uniqueConstraints = {
+    @UniqueConstraint(columnNames = "name")
+})
 public class SpendCategory {
 
     @Id
@@ -11,15 +9,8 @@ public class SpendCategory {
     private Long id;
 
     private String name;
-    private Boolean active;
+    private String description;
+    private Boolean active = true;
 
-    @PrePersist
-    void preSave() {
-        if (active == null) active = true;
-    }
-
-    public SpendCategory() {}
-    public SpendCategory(String name) {
-        this.name = name;
-    }
+    // getters & setters
 }

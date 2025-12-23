@@ -1,11 +1,7 @@
-package com.example.demo.entity;
-
-import jakarta.persistence.*;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-
 @Entity
-@Table(name = "purchase_orders")
+@Table(name = "purchase_orders", uniqueConstraints = {
+    @UniqueConstraint(columnNames = "poNumber")
+})
 public class PurchaseOrder {
 
     @Id
@@ -13,9 +9,6 @@ public class PurchaseOrder {
     private Long id;
 
     private String poNumber;
-    private BigDecimal amount;
-    private LocalDate dateIssued;
-    private String notes;
 
     @ManyToOne
     private Supplier supplier;
@@ -23,5 +16,10 @@ public class PurchaseOrder {
     @ManyToOne
     private SpendCategory category;
 
-    public PurchaseOrder() {}
+    private BigDecimal amount;
+    private LocalDate dateIssued;
+    private String approvedBy;
+    private String notes;
+
+    // getters & setters
 }
