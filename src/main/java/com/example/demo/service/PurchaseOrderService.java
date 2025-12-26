@@ -4,8 +4,6 @@ import com.example.demo.entity.PurchaseOrder;
 import java.util.List;
 
 public interface PurchaseOrderService {
-
-    PurchaseOrder createPurchaseOrder(PurchaseOrder po);
-
+    PurchaseOrder createPurchaseOrder(PurchaseOrder purchaseOrder);
     List<PurchaseOrder> getPurchaseOrdersBySupplier(Long supplierId);
 }
