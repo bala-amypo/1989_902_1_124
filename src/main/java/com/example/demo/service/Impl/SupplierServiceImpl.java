@@ -1,51 +1,40 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.Supplier;
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.SupplierRepository;
 import com.example.demo.service.SupplierService;
-
-import java.time.LocalDateTime;
+import org.springframework.stereotype.Service;
 import java.util.List;
+
 @Service
 public class SupplierServiceImpl implements SupplierService {
-
-    private final SupplierRepository repository;
-
-    public SupplierServiceImpl(SupplierRepository repository) {
-        this.repository = repository;
+    private final SupplierRepository supplierRepository;
+    
+    public SupplierServiceImpl(SupplierRepository supplierRepository) {
+        this.supplierRepository = supplierRepository;
     }
-
+    
     @Override
-    public Supplier create(Supplier supplier) {
-        return repository.save(supplier);
+    public Supplier createSupplier(Supplier supplier) {
+        return supplierRepository.save(supplier);
     }
-
+    
     @Override
-    public Supplier update(Long id, Supplier supplier) {
-        Supplier existing = getById(id);
-        existing.setName(supplier.getName());
-        existing.setEmail(supplier.getEmail());
-        existing.setPhone(supplier.getPhone());
-        existing.setAddress(supplier.getAddress());
-        return repository.save(existing);
+    public Supplier getSupplierById(Long id) {
+        return supplierRepository.findById(id).orElse(null);
     }
-
+    
     @Override
-    public Supplier getById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Supplier not found"));
+    public List<Supplier> getAllSuppliers() {
+        return supplierRepository.findAll();
     }
-
+    
     @Override
-    public List<Supplier> getAll() {
-        return repository.findAll();
-    }
-
-    @Override
-    public void deactivate(Long id) {
-        Supplier s = getById(id);
-        s.setIsActive(false);
-        repository.save(s);
+    public void deactivateSupplier(Long id) {
+        Supplier supplier = supplierRepository.findById(id).orElse(null);
+        if (supplier != null) {
+            supplier.setIsActive(false);
+            supplierRepository.save(supplier);
+        }
     }
 }
