@@ -11,9 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api/auth")
 public class AuthController {
     private final UserAccountService userAccountService;
     private final AuthenticationManager authenticationManager;
@@ -27,7 +28,8 @@ public class AuthController {
         this.jwtUtil = jwtUtil;
     }
     
-    public ResponseEntity<JwtResponse> register(RegisterRequest request) {
+    @PostMapping("/register")
+    public ResponseEntity<JwtResponse> register(@RequestBody RegisterRequest request) {
         UserAccount userAccount = new UserAccount();
         userAccount.setFullName(request.getFullName());
         userAccount.setEmail(request.getEmail());
@@ -40,7 +42,8 @@ public class AuthController {
         return ResponseEntity.ok(new JwtResponse(token));
     }
     
-    public ResponseEntity<JwtResponse> login(LoginRequest request) {
+    @PostMapping("/login")
+    public ResponseEntity<JwtResponse> login(@RequestBody LoginRequest request) {
         try {
             authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
