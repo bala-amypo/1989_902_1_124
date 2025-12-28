@@ -29,4 +29,10 @@ public class SupplierController {
     public ResponseEntity<Supplier> createSupplier(@RequestBody Supplier supplier) {
         return ResponseEntity.ok(supplierService.createSupplier(supplier));
     }
+    
+    @PutMapping("/{id}/deactivate")
+    public ResponseEntity<Void> deactivateSupplier(@PathVariable Long id) {
+        supplierService.deactivateSupplier(id);
+        return ResponseEntity.ok().build();
+    }
 }
